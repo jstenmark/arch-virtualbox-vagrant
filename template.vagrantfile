@@ -1,0 +1,7 @@
+Vagrant.configure("2") do |config|
+  box_root = File.expand_path(File.dirname(__FILE__))
+  config.vm.provision "shell", path: File.join(box_root, "provision.sh")
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = true
+  end
+end

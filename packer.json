@@ -1,0 +1,81 @@
+{
+  "variables": {
+    "disk_size": "20480",
+    "memory": "1024",
+    "video_memory": "64",
+    "cpus": "2",
+    "headless": "false",
+    "boot_wait": "5s"
+  },
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "output_directory ": "build",
+      "boot_wait": "{{user `boot_wait`}}",
+      "http_directory": "scripts/install",
+      "disk_size": "{{user `disk_size`}}",
+      "guest_os_type": "ArchLinux_64",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "iso_url": "{{user `iso_url`}}",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_timeout": "10000s",
+      "shutdown_command": "sudo systemctl poweroff",
+      "guest_additions_mode": "disable",
+      "headless": "{{user `headless`}}",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "{{user `memory`}}"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "{{user `cpus`}}"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--vram",
+          "{{user `video_memory`}}"
+        ]
+      ],
+      "boot_command": [
+        "<enter><wait10><wait10><wait10><enter><enter>",
+        "curl -O 'http://{{.HTTPIP}}:{{.HTTPPort}}/install{,-common,-chroot}.sh'<enter><wait>",
+        "MIRROR='{{user `mirror`}}' bash install.sh < <(cat install-{chroot,common}.sh) && systemctl reboot<enter>"
+      ]
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/deploy/postinstall.sh",
+        "scripts/deploy/virtualbox.sh",
+        "scripts/deploy/cleanup.sh"
+      ],
+      "execute_command": "echo 'vagrant'|sudo -S sh '{{.Path}}'"
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "type": "vagrant",
+        "keep_input_artifact": false,
+        "vagrantfile_template": "template.vagrantfile",
+        "output": "packer_arch_{{.Provider}}.box",
+        "include": "scripts/vagrant/provision.sh"
+      }
+    ]
+  ],
+  "error-cleanup-provisioner": {
+    "type": "shell-local",
+    "command": "notify-send PACKER Cleanup-done"
+  }
+}
