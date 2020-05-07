@@ -1,5 +1,5 @@
 #!/bin/bash
-
+NEWUSER="vagrant"
 ln -sf /usr/share/zoneinfo/UTC /etc/localtime
 sed -i -e 's/^#\(en_US.UTF-8\)/\1/' /etc/locale.gen
 locale-gen
@@ -84,7 +84,7 @@ systemctl enable systemd-resolved
 systemctl enable pacman-init.service
 systemctl enable reflector-init.service
 
-grub-install ${DISK}
+grub-install "${DISK}"
 
 sed -i -e 's/^GRUB_TIMEOUT=.*$/GRUB_TIMEOUT=1/' /etc/default/grub
 # setup unpredictable kernel names

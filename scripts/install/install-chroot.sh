@@ -1,5 +1,4 @@
 #!/bin/bash
-NEWUSER="vagrant"
 function colormsg ()
 {
 	Green='\e[0;32m'

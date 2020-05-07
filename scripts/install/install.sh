@@ -45,7 +45,7 @@ mount ${ROOT_PARTITION} ${TARGET_DIR}
 
 colormsg "==> bootstrapping the base installation"
 if [ -n "${MIRROR}" ]; then
-  echo MIRROR=$MIRROR
+  echo MIRROR="$MIRROR"
   echo "Server = ${MIRROR}" >> /etc/pacman.d/mirrorlist
 else
   pacman -Sy --noconfirm reflector >> /dev/null
