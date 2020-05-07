@@ -1,16 +1,7 @@
 {
-  "variables": {
-    "disk_size": "20480",
-    "memory": "1024",
-    "video_memory": "64",
-    "cpus": "2",
-    "headless": "false",
-    "boot_wait": "5s"
-  },
   "builders": [
     {
       "type": "virtualbox-iso",
-      "output_directory ": "build",
       "boot_wait": "{{user `boot_wait`}}",
       "http_directory": "scripts/install",
       "disk_size": "{{user `disk_size`}}",
@@ -69,13 +60,9 @@
         "type": "vagrant",
         "keep_input_artifact": false,
         "vagrantfile_template": "template.vagrantfile",
-        "output": "packer_arch_{{.Provider}}.box",
+        "output": "{{user `iso_name`}}.box",
         "include": "scripts/vagrant/provision.sh"
       }
     ]
-  ],
-  "error-cleanup-provisioner": {
-    "type": "shell-local",
-    "command": "notify-send PACKER Cleanup-done"
-  }
+  ]
 }

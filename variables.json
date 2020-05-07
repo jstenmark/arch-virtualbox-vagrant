@@ -1,0 +1,13 @@
+{
+  "mirror": "https://ftp.lysator.liu.se/pub/archlinux/$repo/os/$arch",
+  "iso_name": "archlinux-2020.05.01-x86_64.iso",
+  "iso_url": "https://ftp.lysator.liu.se/pub/archlinux/iso/latest/archlinux-2020.05.01-x86_64.iso",
+  "iso_checksum": "fe15ff1c688c078d035e275a4946075281f5324e",
+  "iso_checksum_type": "SHA1",
+  "disk_size": "20480",
+  "memory": "1024",
+  "video_memory": "64",
+  "cpus": "2",
+  "headless": "true",
+  "boot_wait": "5s"
+}

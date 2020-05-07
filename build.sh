@@ -1,21 +1,12 @@
-#/bin/bash
+#!/bin/bash
+VAR_FILE="variables.json"
+PACKER_FILE="packer.json"
+REPO="https://ftp.lysator.liu.se/pub/archlinux"
+
 set -e
+source scripts/functions/build_functions.sh
 
-MIRROR="https://ftp.lysator.liu.se/pub/archlinux"
-PKG_MIRROR="${MIRROR}/\$repo/os/\$arch"
-SHA1SUMS=$(curl -s "${MIRROR}/iso/latest/sha1sums.txt")
-
-ISO_NAME=$(echo "$SHA1SUMS" | awk '/x86_64.iso/{ print $2 }')
-ISO_URL="${MIRROR}/iso/latest/${ISO_NAME}"
-ISO_CHECKSUM=$(echo "$SHA1SUMS" | awk '/x86_64.iso/{ print $1 }')
-ISO_CHECKSUM_TYPE="SHA1"
-
-packer build \
-	-var "mirror=$PKG_MIRROR" \
-	-var "iso_url=$ISO_URL" \
-	-var "iso_checksum=$ISO_CHECKSUM" \
-	-var "iso_checksum_type=$ISO_CHECKSUM_TYPE" \
-	packer.json
-
-vagrant box add arch build/packer_arch_virtualbox.box --force
-notify-send PACKER BUILD_COMPLETE
+update_var_file
+packer build --force -var-file $VAR_FILE $PACKER_FILE
+vagrant box add $ISO_NAME $ISO_NAME.box --force
+notify_msg
