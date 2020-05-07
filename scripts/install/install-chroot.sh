@@ -1,9 +1,8 @@
 #!/bin/bash
-function colormsg ()
-{
-	Green='\e[0;32m'
-	Reset='\e[0m'
-    echo -e "${Green}$1${Reset}"
+function colormsg() {
+  Green='\e[0;32m'
+  Reset='\e[0m'
+  echo -e "${Green}$1${Reset}"
 }
 post() {
   colormsg "==> POSTINSTALL CREATE USER DIR"

@@ -73,7 +73,7 @@ EOF
 # root
 usermod --password root root
 sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
-echo "GSSAPIAuthentication no" >> /etc/ssh/sshd_config
+echo "GSSAPIAuthentication no" >>/etc/ssh/sshd_config
 
 # enabling important services
 systemctl daemon-reload
@@ -94,6 +94,5 @@ grub-mkconfig -o /boot/grub/grub.cfg
 if declare -f post >/dev/null; then
   post
 fi
-
 
 colormsg "==> installation complete!"

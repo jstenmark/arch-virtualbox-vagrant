@@ -3,7 +3,7 @@ name: Github-Actions
 on: [push, pull_request]
 
 jobs:
-  vagrant-validation:
+  packer-validation:
     runs-on: ubuntu-latest
 
     steps:
@@ -11,7 +11,7 @@ jobs:
     - name: install packer
       run: ./generic-ci.sh install-packer
 
-    - name: verify local.json
+    - name: verify packer
       run: ./generic-ci.sh verify-ci
 
   shell-syntax-validation:

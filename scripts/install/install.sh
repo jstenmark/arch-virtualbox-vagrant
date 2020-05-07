@@ -1,22 +1,20 @@
 #!/bin/bash
 #install.sh
 set -e
-function colormsg ()
-{
-	Green='\e[0;32m'
-	Reset='\e[0m'
-    echo -e "${Green}$1${Reset}"
+function colormsg() {
+  Green='\e[0;32m'
+  Reset='\e[0m'
+  echo -e "${Green}$1${Reset}"
 }
-function get_disk()
-{
-	if [ -e /dev/vda ]; then
-	  export DISK=/dev/vda
-	elif [ -e /dev/sda ]; then
-	  export DISK=/dev/sda
-	else
-	  echo "ERROR: There is no disk available for installation" >&2
-	  exit 1
-	fi
+function get_disk() {
+  if [ -e /dev/vda ]; then
+    export DISK=/dev/vda
+  elif [ -e /dev/sda ]; then
+    export DISK=/dev/sda
+  else
+    echo "ERROR: There is no disk available for installation" >&2
+    exit 1
+  fi
 }
 
 get_disk
@@ -46,19 +44,18 @@ mount ${ROOT_PARTITION} ${TARGET_DIR}
 colormsg "==> bootstrapping the base installation"
 if [ -n "${MIRROR}" ]; then
   echo MIRROR="$MIRROR"
-  echo "Server = ${MIRROR}" >> /etc/pacman.d/mirrorlist
+  echo "Server = ${MIRROR}" >>/etc/pacman.d/mirrorlist
 else
-  pacman -Sy --noconfirm reflector >> /dev/null
+  pacman -Sy --noconfirm reflector >>/dev/null
   reflector --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
 fi
-pacstrap -M ${TARGET_DIR} base linux grub openssh sudo polkit haveged netctl python reflector >> /dev/null
+pacstrap -M ${TARGET_DIR} base linux grub openssh sudo polkit haveged netctl python reflector >>/dev/null
 arch-chroot ${TARGET_DIR} /usr/bin/sed -i 's/^#Server/Server/' /etc/pacman.d/mirrorlist
 
 colormsg "==> generating the filesystem table"
 swapon ${SWAP_PARTITION}
-genfstab -p ${TARGET_DIR} >> "${TARGET_DIR}/etc/fstab"
+genfstab -p ${TARGET_DIR} >>"${TARGET_DIR}/etc/fstab"
 swapoff ${SWAP_PARTITION}
 
 colormsg "==> entering chroot and configuring system"
 DISK=$DISK arch-chroot ${TARGET_DIR} /bin/bash
-

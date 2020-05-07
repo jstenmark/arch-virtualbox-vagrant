@@ -40,7 +40,7 @@ case $1 in
   # We use + instead of \; here because find doesn't pass
   # the exit code through when used with \;
   shellcheck)
-    find . -iname "*.sh" -exec shellcheck {} +
+    find . -iname "*.sh" -exec shellcheck --exclude=SC1091 {} +
     ;;
 
   shfmt)
