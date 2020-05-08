@@ -32,11 +32,12 @@ case $1 in
     ;;
 
   verify-ci)
-    ./packer validate -var-file "$VAR_FILE" packer/template.json
+    pwd
+    ./packer validate -var-file "$VAR_FILE" build/template.json
     ;;
 
   verify-local)
-    packer validate -var-file "$VAR_FILE" packer/template.json
+    packer validate -var-file "$VAR_FILE" build/template.json
     ;;
 
   # We use + instead of \; here because find doesn't pass
