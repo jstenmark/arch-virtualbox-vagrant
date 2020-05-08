@@ -92,8 +92,5 @@ sed -i -e 's/^GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="net.ifnames=0"/' /etc/d
 grub-mkconfig -o /boot/grub/grub.cfg
 
 if declare -f post >/dev/null; then
-  colormsg "==> CREATE USER HOME"
   post "$NEWUSER"
 fi
-
-colormsg "==> installation complete!"
