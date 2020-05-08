@@ -1,5 +1,4 @@
 #!/bin/bash
-VAR_FILE="build/variables.json"
 
 # set json env var
 function set_var() {
@@ -22,27 +21,6 @@ function format_value() {
   echo "$VALUE"
 }
 
-function update_var_file() {
-  REPO=$(grep '"repo":' "$VAR_FILE" | awk -v FS="(\")" '{print $4}')
-  if [[ -z "$REPO" ]]; then
-    echo repo is not set in "$VAR_FILE"
-    echo example: https://ftp.lysator.liu.se/pub/archlinux
-    exit
-  fi
-
-  MIRROR="${REPO}/\$repo/os/\$arch"
-  SHA1SUMS=$(curl -s "${REPO}/iso/latest/sha1sums.txt")
-  ISO_NAME=$(echo "$SHA1SUMS" | awk '/x86_64.iso/{ print $2 }')
-  ISO_URL="${REPO}/iso/latest/${ISO_NAME}"
-  ISO_CHECKSUM=$(echo "$SHA1SUMS" | awk '/x86_64.iso/{ print $1 }')
-
-  set_var iso_name="$ISO_NAME"
-  set_var mirror="$MIRROR"
-  set_var iso_url="$ISO_URL"
-  set_var iso_checksum="$ISO_CHECKSUM"
-  set_var iso_checksum_type="SHA1"
-}
-
 SECONDS=0
 function notify_msg() {
   # shellcheck disable=SC2004
@@ -52,13 +30,7 @@ function notify_msg() {
   notify-send Packer "$MSG"
 }
 
-function packer_build() {
-  packer build \
-    -var-file "$VAR_FILE" \
-    --force \
-    packer/template.json
-}
-
-function vagrant_add_box() {
-  vagrant box add "$ISO_NAME" "$ISO_NAME.box" --force
+function fail {
+  printf '%s\n' "$1" >&2  ## Send message to stderr. Exclude >&2 if you don't want it that way.
+  exit "${2-1}"  ## Return a code specified by $2 or 1 by default.
 }
