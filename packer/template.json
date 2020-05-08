@@ -47,9 +47,9 @@
     {
       "type": "shell",
       "scripts": [
-        "scripts/deploy/postinstall.sh",
-        "scripts/deploy/virtualbox.sh",
-        "scripts/deploy/cleanup.sh"
+        "virtualbox/postinstall.sh",
+        "virtualbox/virtualbox.sh",
+        "virtualbox/cleanup.sh"
       ],
       "execute_command": "echo 'vagrant'|sudo -S sh '{{.Path}}'"
     }
@@ -59,9 +59,9 @@
       {
         "type": "vagrant",
         "keep_input_artifact": false,
-        "vagrantfile_template": "template.vagrantfile",
+        "vagrantfile_template": "vagrant/template.vagrantfile",
         "output": "{{user `iso_name`}}.box",
-        "include": "scripts/vagrant/provision.sh"
+        "include": "vagrant/provision.sh"
       }
     ]
   ]

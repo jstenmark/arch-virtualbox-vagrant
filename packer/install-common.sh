@@ -8,7 +8,7 @@ echo 'LANG=en_US.UTF-8' >/etc/locale.conf
 # setting the user credentials
 echo -e "${NEWUSER}\n${NEWUSER}" | passwd
 useradd -m -U "${NEWUSER}"
-echo -e "${NEWUSER}\n${NEWUSER}" | passwd "${NEWUSER}"
+echo -e "${NEWUSER}\n${NEWUSER}" | passwd "$NEWUSER"
 
 # setting automatic authentication for any action requiring admin rights via Polkit
 cat <<EOF >/etc/polkit-1/rules.d/49-nopasswd_global.rules
@@ -20,11 +20,11 @@ polkit.addRule(function(action, subject) {
 EOF
 
 # setting sudo for the user
-cat <<EOF >"/etc/sudoers.d/${NEWUSER}"
-Defaults:${NEWUSER} !requiretty
-${NEWUSER} ALL=(ALL) NOPASSWD: ALL
+cat <<EOF >"/etc/sudoers.d/$NEWUSER"
+Defaults:$NEWUSER !requiretty
+$NEWUSER ALL=(ALL) NOPASSWD: ALL
 EOF
-chmod 440 "/etc/sudoers.d/${NEWUSER}"
+chmod 440 "/etc/sudoers.d/$NEWUSER"
 
 # setup network
 cat <<EOF >/etc/systemd/network/eth0.network
@@ -84,7 +84,7 @@ systemctl enable systemd-resolved
 systemctl enable pacman-init.service
 systemctl enable reflector-init.service
 
-grub-install "${DISK}"
+grub-install "$DISK"
 
 sed -i -e 's/^GRUB_TIMEOUT=.*$/GRUB_TIMEOUT=1/' /etc/default/grub
 # setup unpredictable kernel names
@@ -92,7 +92,8 @@ sed -i -e 's/^GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="net.ifnames=0"/' /etc/d
 grub-mkconfig -o /boot/grub/grub.cfg
 
 if declare -f post >/dev/null; then
-  post
+  colormsg "==> CREATE USER HOME"
+  post "$NEWUSER"
 fi
 
 colormsg "==> installation complete!"

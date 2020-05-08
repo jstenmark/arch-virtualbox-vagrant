@@ -1,4 +1,5 @@
 #!/bin/bash
+VAR_FILE="build/variables.json"
 
 # set json env var
 function set_var() {
@@ -22,6 +23,13 @@ function format_value() {
 }
 
 function update_var_file() {
+  REPO=$(grep '"repo":' "$VAR_FILE" | awk -v FS="(\")" '{print $4}')
+  if [[ -z "$REPO" ]]; then
+    echo repo is not set in "$VAR_FILE"
+    echo example: https://ftp.lysator.liu.se/pub/archlinux
+    exit
+  fi
+
   MIRROR="${REPO}/\$repo/os/\$arch"
   SHA1SUMS=$(curl -s "${REPO}/iso/latest/sha1sums.txt")
   ISO_NAME=$(echo "$SHA1SUMS" | awk '/x86_64.iso/{ print $2 }')
@@ -42,4 +50,15 @@ function notify_msg() {
   MSG="Build completed in ${EXECUTION_TIME}"
   echo "$MSG"
   notify-send Packer "$MSG"
+}
+
+function packer_build() {
+  packer build \
+    -var-file "$VAR_FILE" \
+    --force \
+    packer/template.json
+}
+
+function vagrant_add_box() {
+  vagrant box add "$ISO_NAME" "$ISO_NAME.box" --force
 }

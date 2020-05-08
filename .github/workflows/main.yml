@@ -1,34 +1,27 @@
 name: Github-Actions
-
 on: [push, pull_request]
-
 jobs:
   packer-validation:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v1
     - name: install packer
-      run: ./generic-ci.sh install-packer
-
+      run: ./build/ci.sh install-packer
     - name: verify packer
-      run: ./generic-ci.sh verify-ci
+      run: ./build/ci.sh verify-ci
 
   shell-syntax-validation:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v1
     - name: run shellcheck
-      run: ./generic-ci.sh shellcheck
+      run: ./build/ci.sh shellcheck
 
   shell-format-validation:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v1
     - name: install-shfmt
-      run: ./generic-ci.sh install-shfmt
-
+      run: ./build/ci.sh install-shfmt
     - name: run shfmt checks
-      run: ./generic-ci.sh shfmt
+      run: ./build/ci.sh shfmt

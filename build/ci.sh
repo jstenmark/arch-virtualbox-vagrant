@@ -1,5 +1,6 @@
 #!/bin/bash
 set -x
+VAR_FILE="build/variables.json"
 
 case $1 in
 
@@ -31,12 +32,13 @@ case $1 in
     ;;
 
   verify-ci)
-    source .env && ./packer validate -var-file "$VAR_FILE" "$PACKER_FILE"
+    ./packer validate -var-file "$VAR_FILE" packer/template.json
     ;;
 
   verify-local)
-    source .env && packer validate -var-file "$VAR_FILE" "$PACKER_FILE"
+    packer validate -var-file "$VAR_FILE" packer/template.json
     ;;
+
   # We use + instead of \; here because find doesn't pass
   # the exit code through when used with \;
   shellcheck)
