@@ -1,7 +1,6 @@
 #!/bin/sh
 # this script must be executed as root user
-#username=$SUDO_USER
-#userhome=$(getent passwd $SUDO_USER | cut -d: -f6)
+
 #pacman --noconfirm -Syu
 # remove guest utils provided by the box (they do not work in the GUI environment)
 # pacman --noconfirm -R virtualbox-guest-utils-nox
@@ -15,3 +14,5 @@
 #    termite chromium \
 #    php php-mcrypt php-xsl xdebug php-intl php-gd composer \
 #    virtualbox-guest-utils
+
+#VBoxManage setextradata global GUI/Customizations noMenuBar,noStatusBar
