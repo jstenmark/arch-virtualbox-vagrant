@@ -1,6 +1,8 @@
 #!/bin/bash
 set -x
-VAR_FILE="build/variables.json"
+pwd
+source build/functions.sh
+source build/env.sh
 
 case $1 in
 
@@ -32,12 +34,11 @@ case $1 in
     ;;
 
   verify-ci)
-    pwd
-    ./packer validate -var-file "$VAR_FILE" build/template.json
+    ./packer validate -var-file "$CONFIG_VBOX" build/template.json
     ;;
 
   verify-local)
-    packer validate -var-file "$VAR_FILE" build/template.json
+    packer validate -var-file "$CONFIG_VBOX" build/template.json
     ;;
 
   # We use + instead of \; here because find doesn't pass
@@ -48,6 +49,10 @@ case $1 in
 
   shfmt)
     find . -iname "*.sh" -exec ./shfmt -i 2 -ci -d {} +
+    ;;
+
+  shfmt-write)
+    find . -iname "*.sh" -exec ./shfmt -i 2 -ci -d -w {} +
     ;;
 
   *)
