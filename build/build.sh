@@ -22,12 +22,9 @@ function format_value() {
 }
 
 SECONDS=0
-function notify_msg() {
+function get_execution_time() {
   # shellcheck disable=SC2004
-  EXECUTION_TIME="$(((${SECONDS} / 60) % 60))min $(($SECONDS % 60))sec"
-  MSG="Build completed in ${EXECUTION_TIME}"
-  echo "$MSG"
-  notify-send Packer "$MSG"
+  echo "$(((${SECONDS} / 60) % 60))min $(($SECONDS % 60))sec"
 }
 
 function fail() {
