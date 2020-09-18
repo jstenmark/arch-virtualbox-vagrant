@@ -65,12 +65,12 @@ ConditionFirstBoot=yes
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=reflector --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+ExecStart=reflector --age 12 --protocol https -c Sweden --sort rate --save /etc/pacman.d/mirrorlist
 [Install]
 WantedBy=multi-user.target
 EOF
 
-# root
+# root fixes
 usermod --password root root
 sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
 echo "GSSAPIAuthentication no" >>/etc/ssh/sshd_config
@@ -84,13 +84,12 @@ systemctl enable systemd-resolved
 systemctl enable pacman-init.service
 systemctl enable reflector-init.service
 
+# install grub
 grub-install "$DISK"
-
 sed -i -e 's/^GRUB_TIMEOUT=.*$/GRUB_TIMEOUT=1/' /etc/default/grub
 # setup unpredictable kernel names
 sed -i -e 's/^GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="net.ifnames=0"/' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
-if declare -f post >/dev/null; then
-  post "$NEWUSER"
-fi
+# install chroot
+[[ declare -f post >/dev/null ]] && post "$NEWUSER"

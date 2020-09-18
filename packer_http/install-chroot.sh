@@ -4,4 +4,5 @@ post() {
   curl --output /home/"$1"/.ssh/authorized_keys --location https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant.pub
   chown "$1":"$1" /home/"$1"/.ssh/authorized_keys
   chmod 0600 /home/"$1"/.ssh/authorized_keys
+  echo "created user" > /home/"$1"/done
 }

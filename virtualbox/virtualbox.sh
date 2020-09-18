@@ -9,6 +9,5 @@ sudo systemctl enable vboxservice
 VBoxClient --clipboard
 VBoxClient --draganddrop
 VBoxClient --seamless
-VBoxClient --display
 VBoxClient --checkhostversion
-VBoxClient --vmsvga-x11
+VBoxClient --vmsvga
