@@ -1,7 +1,5 @@
 # arch-virtualbox-vagrant
 
-Packer template for arch with virtualbox + vagrant provisioning
-
 ## Installation
 
 ```bash
@@ -16,6 +14,13 @@ chmod +x build.sh
 mkdir ../archbox && cd ../archbox
 vagrant init $boxname
 ```
+
+## Dependencies
+You'll need the following dependencies:
+
+* packer (for basic usage)
+* vagrant (for vagrant images)
+* virtualbox
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

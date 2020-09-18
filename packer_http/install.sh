@@ -1,4 +1,7 @@
 #!/bin/bash
+# TODO: BRTFS
+# https://github.com/archlinux/arch-boxes/blob/master/http/install.sh
+
 set -e
 function msg() {
   case $1 in
