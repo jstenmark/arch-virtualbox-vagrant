@@ -34,11 +34,11 @@ case $1 in
     ;;
 
   verify-ci)
-    ./packer validate -var-file "$CONFIG_VBOX" build/template.json
+    ./packer validate -var-file "$CONFIG_VBOX" "$CONFIG_PACKER"
     ;;
 
   verify-local)
-    packer validate -var-file "$CONFIG_VBOX" build/template.json
+    packer validate -var-file "$CONFIG_VBOX" "$CONFIG_PACKER"
     ;;
 
   # We use + instead of \; here because find doesn't pass

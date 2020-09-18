@@ -92,4 +92,4 @@ sed -i -e 's/^GRUB_CMDLINE_LINUX=.*$/GRUB_CMDLINE_LINUX="net.ifnames=0"/' /etc/d
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # install chroot
-[[ declare -f post >/dev/null ]] && post "$NEWUSER"
+install_user "$NEWUSER"
