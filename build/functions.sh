@@ -26,6 +26,21 @@ function msg() {
     echo -e "${COLOR}${2}\e[0m ${*:3}"
 }
 
+function okk() {
+  # shellcheck disable=SC2015
+  [[ $PRECOMMIT == "true" ]] &&
+    msg green "[PRE-COMMIT-HOOK]" "$1" ||
+    msg green "" "$1"
+}
+
+function err() {
+  # shellcheck disable=SC2015
+  [[ $PRECOMMIT == "true" ]] &&
+    msg red "[PRE-COMMIT-HOOK]" "$1" ||
+    msg red "[ERROR]" "$1"
+  exit 1
+}
+
 # check if debuging and return err
 function no_debug() {
   [[ "$DEBUGGING" == "true" ]] && return 1 || return 0
