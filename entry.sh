@@ -2,15 +2,14 @@
 source build/functions.sh
 source build/env.sh
 
-PRECOMMIT=$([[ "$2" == "precommit" ]] && echo "true")
+PRECOMMIT=$([[ "$2" == "precommit" ]] && echo "true" || echo "false")
 
 case $1 in
   build)
     source build/build.sh
     ;;
   dev)
-    DEBUGGING="true"
-    source build/build.sh
+    DEBUGGING="true" source build/build.sh
     ;;
   test)
     # shellcheck disable=SC2015
