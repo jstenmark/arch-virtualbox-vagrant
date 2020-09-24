@@ -37,10 +37,6 @@ case $1 in
     ./packer validate -var-file "$CONFIG_VBOX" "$CONFIG_PACKER"
     ;;
 
-  verify-local)
-    packer validate -var-file "$CONFIG_VBOX" "$CONFIG_PACKER"
-    ;;
-
   # We use + instead of \; here because find doesn't pass
   # the exit code through when used with \;
   shellcheck)
@@ -49,10 +45,6 @@ case $1 in
 
   shfmt)
     find . -iname "*.sh" -exec ./shfmt -i 2 -ci -d {} +
-    ;;
-
-  shfmt-write)
-    find . -iname "*.sh" -exec ./shfmt -i 2 -ci -d -w {} +
     ;;
 
   *)

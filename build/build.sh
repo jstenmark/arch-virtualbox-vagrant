@@ -1,6 +1,7 @@
 #!/bin/bash
-source build/functions.sh
-source build/env.sh
+no_debug || msg red "[INIT]" "DEBUG ENABLED"
+msg cyan "[INIT]" "Loading ENV variables"
+msg cyan "[INIT]" "Loading functions"
 
 set_var iso_name="$ISO_NAME"
 set_var mirror="${REPO}/\$repo/os/\$arch"

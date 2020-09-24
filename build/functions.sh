@@ -1,13 +1,4 @@
 #!/bin/bash
-DEBUGGING="false"
-SECONDS=0
-REPO_EXAMPLE="https://ftp.lysator.liu.se/pub/archlinux"
-ERR_MISSING_REPO="Missing 'repo' in VBOX config ($REPO_EXAMPLE)"
-
-function no_debug() {
-  [[ "$DEBUGGING" == "true" ]] && return 1 || return 0
-}
-
 function msg() {
   case $1 in
     red)
@@ -30,9 +21,14 @@ function msg() {
       ;;
   esac
 
-  [[ -z "$2" ]] \
-    && echo -e "${COLOR}${@:2}\e[0m" \
-    || echo -e "${COLOR}${2}\e[0m ${@:3}"
+  [[ -z "$2" ]] &&
+    echo -e "${COLOR}${*:2}\e[0m" ||
+    echo -e "${COLOR}${2}\e[0m ${*:3}"
+}
+
+# check if debuging and return err
+function no_debug() {
+  [[ "$DEBUGGING" == "true" ]] && return 1 || return 0
 }
 
 # set json env var
@@ -59,14 +55,11 @@ function format_value() {
 
 function fail() {
   msg red "[ERROR]" "$1"
-  exit "${2-1}"          # Return a code specified by $2 or 1 by default.
+  exit "${2-1}" # Return a code specified by $2 or 1 by default.
 }
 
+SECONDS=0
 function build_ok_msg() {
   # shellcheck disable=SC2004
   echo "Build finished in $(((${SECONDS} / 60) % 60))min $(($SECONDS % 60))sec"
 }
-
-# Init text
-no_debug || msg cyan "[INIT]" "DEBUG=$DEBUGGING"
-msg cyan "[INIT]" "Build helpers"
